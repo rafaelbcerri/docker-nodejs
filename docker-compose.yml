@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  node:
+    build: .
+    image: app
+    volumes:
+      - ./:/app
+    ports:
+      - "8080:8080"
+    env_file:
+      - node-secrets.env
+    command: "npm start"
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - ./my.cnf:/etc/my.cnf
+      - ./db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    env_file:
+      - db-secrets.env
+
+volumes:
+  db-data:
